@@ -3,7 +3,7 @@ This is about implementing a new ThunderNanoservice in the WPEFramework. This pl
 1) Enter the path for the video file
 2) Play the video
 3) pause the video
-4) auto looping 
+4) looping  
 5) Entering a new path to play video
 
 In order to create a plugin under ThunderNanoServices. Please follow the steps below:
@@ -17,5 +17,10 @@ In order to create a plugin under ThunderNanoServices. Please follow the steps b
      add_subdirectory(Player)
    endif()   
 using the following curl commands the API's can be invoked:
+
 $curl --header "Content-Type: application/json" --request POST --data '{"jsonrpc": "2.0",  "id": 42,  "method": "Player.1.Path","params":{"url":"path_to_file"}}'  http://127.0.0.1:55555/jsonrpc
+
+
 $curl --header "Content-Type: application/json" --request POST --data '{"jsonrpc": "2.0",  "id": 42,  "method": "Player.1.pause_play"}'  http://127.0.0.1:55555/jsonrpc
+
+$curl --header "Content-Type: application/json" --request POST --data '{"jsonrpc": "2.0",  "id": 42,  "method": "Player.1.set_loop"}'  http://127.0.0.1:55555/jsonrpc
