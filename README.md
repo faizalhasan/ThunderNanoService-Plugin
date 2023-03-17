@@ -13,8 +13,11 @@ In order to create a plugin under ThunderNanoServices. Please follow the steps b
 4) And finally add the following line in the CMakeLists.txt file which is inside the example folder
    
    option(PLUGIN_PLAYER "Include Player plugin" OFF)
-   if (PLUGIN_PLAYER)
-     add_subdirectory(Player)
+  
+  if (PLUGIN_PLAYER)
+  
+      add_subdirectory(Player)
+   
    endif()   
 using the following curl commands the API's can be invoked:
 
