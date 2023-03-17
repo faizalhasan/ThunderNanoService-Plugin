@@ -12,13 +12,14 @@ In order to create a plugin under ThunderNanoServices. Please follow the steps b
 3) Inside ThunderNanoService there will be a folder called example and under that you can add the folder called Player
 4) And finally add the following line in the CMakeLists.txt file which is inside the example folder
    
-   option(PLUGIN_PLAYER "Include Player plugin" OFF)
+  
+  option(PLUGIN_PLAYER "Include Player plugin" OFF)
   
   if (PLUGIN_PLAYER)
+    add_subdirectory(Player)
+  endif()   
   
-      add_subdirectory(Player)
-   
-   endif()   
+  
 using the following curl commands the API's can be invoked:
 
 $curl --header "Content-Type: application/json" --request POST --data '{"jsonrpc": "2.0",  "id": 42,  "method": "Player.1.Path","params":{"url":"path_to_file"}}'  http://127.0.0.1:55555/jsonrpc
