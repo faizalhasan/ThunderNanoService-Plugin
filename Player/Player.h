@@ -23,7 +23,8 @@
                 GstElement *pipeline;
                 GstBus *bus;
                 GstMessage *msg;
-                GstEvent *event;           
+                GstEvent *event;  
+                static bool looping;
 namespace WPEFramework {
    namespace Plugin {
       class Player : public PluginHost::IPlugin
@@ -42,6 +43,7 @@ namespace WPEFramework {
                 virtual string Information() const override ;
                 uint32_t Path(const JsonObject& request);
                 uint32_t pause_play();
+                uint32_t set_loop();
                 BEGIN_INTERFACE_MAP(Player)
                 INTERFACE_ENTRY(PluginHost::IPlugin)
                 INTERFACE_ENTRY(PluginHost::IDispatcher)
