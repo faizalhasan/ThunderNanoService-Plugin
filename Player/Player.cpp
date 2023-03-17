@@ -31,6 +31,7 @@ namespace WPEFramework
         {
           Register<JsonObject, void>(_T("Path"),&Player::Path, this);
           Register<void, void>(_T("pause_play"),&Player::pause_play, this);
+   	  Register<void, void>(_T("set_loop"),&Player::set_loop, this);
         }
         Player::~Player()
         {
@@ -77,11 +78,16 @@ namespace WPEFramework
             break;
                 case GST_MESSAGE_EOS:
             g_print ("End-Of-Stream reached.\n");
-
-            event = gst_event_new_seek(1.0, GST_FORMAT_TIME, GST_SEEK_FLAG_FLUSH, GST_SEEK_TYPE_SET, 0, GST_SEEK_TYPE_NONE, 0);  // move the start position
-                        gst_element_send_event(pipeline, event);
-                        gst_element_set_state(pipeline, GST_STATE_PLAYING);
-                         // Restart the pipeline
+            if(looping==true){
+		event = gst_event_new_seek(1.0, GST_FORMAT_TIME, GST_SEEK_FLAG_FLUSH, GST_SEEK_TYPE_SET, 0, GST_SEEK_TYPE_NONE, 0);  // move the start position
+                gst_element_send_event(pipeline, event);
+                gst_element_set_state(pipeline, GST_STATE_PLAYING);
+                }// Restart the pipeline
+            else
+            {
+             gst_element_set_state (pipeline, GST_STATE_NULL);
+             gst_object_unref (pipeline);
+            }             
             break;
                 default:
             /* We should not reach here because we only asked for ERRORs and EOS */
@@ -91,15 +97,15 @@ namespace WPEFramework
            }
            gst_message_unref (msg);
          }
-	        gst_element_set_state (pipeline, GST_STATE_NULL);
+	  gst_element_set_state (pipeline, GST_STATE_NULL);
           gst_object_unref (pipeline);
-	        return NULL;
+	  return NULL;
         }  
       //in order to set the path of the file to play
         uint32_t Player::Path(const JsonObject& request)
         {
           uint32_t result=Core::ERROR_NONE;
-          //looping=false;
+          looping=false;
           if(pipeline!=NULL)
           {
             gst_element_set_state (pipeline, GST_STATE_NULL);
@@ -129,5 +135,13 @@ namespace WPEFramework
          } 
          return Core::ERROR_NONE;        
          }     
+	 uint32_t Player::set_loop()
+        {
+         if(looping==false)
+           looping=true;
+         else
+           looping=false;
+         return Core::ERROR_NONE;
+        }
     }  // namespace plugin  
 }  // namespace framework
